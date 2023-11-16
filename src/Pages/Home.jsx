@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import titleImage from "../assets/images/sandy.jpg";
 import ProjectCard from "../Components/ProjectCard";
 import { Link } from "react-router-dom";
 function Home() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    if (sessionStorage.getItem("token")) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, []);
   return (
     <>
       <div
@@ -26,9 +34,15 @@ function Home() {
                 all projects available in our website... what are you waiting
                 for !!!
               </p>
-              <Link to={"/Login"} className="btn btn-dark">
-                Start to explore
-              </Link>
+              {loggedIn ? (
+                <Link to={"/dashboard"} className="btn btn-dark">
+                  Manage Your Projects
+                </Link>
+              ) : (
+                <Link to={"/Login"} className="btn btn-dark">
+                  Start to explore
+                </Link>
+              )}
             </Col>
             <Col sm={12} md={6}>
               <img

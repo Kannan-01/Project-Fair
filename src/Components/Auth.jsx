@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 import loginpic from "../assets/images/login.jpg";
 import { Form } from "react-bootstrap";
-import { registerAPI } from "../services/allAPI";
+import { loginAPI, registerAPI } from "../services/allAPI";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,6 +13,7 @@ function Auth({ register }) {
     email: "",
     password: "",
   });
+  // handle registration function
   const handleRegister = async (e) => {
     e.preventDefault();
     const { username, email, password } = userData;
@@ -35,6 +36,34 @@ function Auth({ register }) {
       }
     }
   };
+
+  // handle login function
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const { email, password } = userData;
+    if (!email || !password) {
+      toast.info("Please fill the form completely !!");
+    } else {
+      const result = await loginAPI(userData);
+      console.log(result);
+      if (result.status === 200) {
+        sessionStorage.setItem(
+          "existingUser",
+          JSON.stringify(result.data.existingUser)
+        );
+        sessionStorage.setItem("token", result.data.token);
+        setUserData({
+          email: "",
+          password: "",
+        });
+        navigate("/");
+      } else {
+        toast.warning(result.response.data);
+        console.log(result);
+      }
+    }
+  };
+
   const isRegisterForm = register ? true : false;
   return (
     <>
@@ -121,8 +150,11 @@ function Auth({ register }) {
                       </div>
                     ) : (
                       <div>
-                        <button className="btn btn-dark shadow-0">
-                          Register
+                        <button
+                          onClick={handleLogin}
+                          className="btn btn-dark shadow-0"
+                        >
+                          Login
                         </button>
                         <p className="text-muted mt-2">
                           New user ? Click here to{" "}
