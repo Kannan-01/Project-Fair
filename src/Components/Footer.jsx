@@ -8,12 +8,13 @@ import {
   MDBInput,
   MDBBtn,
 } from "mdb-react-ui-kit";
+import { Link } from "react-router-dom";
 function Footer() {
   return (
     <div>
       <MDBFooter
         bgColor="light"
-        className="text-center text-lg-start text-muted"
+        className="text-center text-lg-start text-muted mt-5"
       >
         <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
           <div className="me-5 d-none d-lg-block">
@@ -46,8 +47,8 @@ function Footer() {
           <MDBContainer className="text-center text-md-start mt-5">
             <MDBRow className="mt-3">
               <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-4">
-                <h6 className="text-uppercase fw-bold mb-4">
-                  <MDBIcon icon="gem" className="me-3" />
+                <h6 className="text-uppercase fw-bold mb-3">
+                <MDBIcon fas icon="project-diagram" className="me-2" />
                   Project Fair
                 </h6>
                 <p>
@@ -60,16 +61,24 @@ function Footer() {
               <MDBCol md="2" lg="2" xl="2" className="mx-auto mb-4">
                 <h6 className="text-uppercase fw-bold mb-4">Links</h6>
                 <p>
-                  <a className="text-reset">Home</a>
+                  <Link to={"/"} className="text-reset">
+                    Home
+                  </Link>{" "}
                 </p>
                 <p>
-                  <a className="text-reset">Register</a>
+                  <Link to={"/register"} className="text-reset">
+                    Register
+                  </Link>{" "}
                 </p>
                 <p>
-                  <a className="text-reset">Projects</a>
+                  <Link to={"/projects"} className="text-reset">
+                    Projects
+                  </Link>{" "}
                 </p>
                 <p>
-                  <a className="text-reset">Dashboard</a>
+                  <Link to={"/dashboard"} className="text-reset">
+                    Dashboard
+                  </Link>{" "}
                 </p>
               </MDBCol>
 
@@ -101,17 +110,17 @@ function Footer() {
                 <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
                 <p>
                   <MDBIcon icon="home" className="me-2" />
-                  New York, NY 10012, US
+                  Kakkanad, Kochi
                 </p>
                 <p>
                   <MDBIcon icon="envelope" className="me-3" />
-                  info@example.com
+                  info@luminartechnolab.com
                 </p>
                 <p>
-                  <MDBIcon icon="phone" className="me-3" /> + 01 234 567 88
+                  <MDBIcon icon="phone" className="me-3" /> 0484 2874845
                 </p>
                 <p>
-                  <MDBIcon icon="print" className="me-3" /> + 01 234 567 89
+                  <MDBIcon icon="print" className="me-3" /> 0484 2874845
                 </p>
               </MDBCol>
             </MDBRow>
