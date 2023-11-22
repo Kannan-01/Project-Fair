@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Header from "../Components/Header";
 import Profile from "../Components/Profile";
 import UserProject from "../Components/UserProject";
 
 function Dashboard() {
+  const [username, setUserName] = useState("");
+  useEffect(() => {
+    if (sessionStorage.getItem("existingUser")) {
+      setUserName(JSON.parse(sessionStorage.getItem("existingUser")).username);
+    }
+  }, []);
   return (
     <>
       <Header insideDashboard />
@@ -13,7 +19,7 @@ function Dashboard() {
           <Col sm={12} md={8}>
             {/* my project */}
             <h2 className="text-black">
-              Welcome <span className="text-muted">User</span>
+              Welcome <span className="text-muted text-capitalize">{username}</span>
             </h2>
             <UserProject />
           </Col>

@@ -3,15 +3,31 @@ import { Row, Col } from "react-bootstrap";
 import titleImage from "../assets/images/sandy.jpg";
 import ProjectCard from "../Components/ProjectCard";
 import { Link } from "react-router-dom";
+import { homeProjectAPI } from "../services/allAPI";
 function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [homeProjects, setHomeProjects] = useState([]);
+
+  const getHomeProjects = async () => {
+    const result = await homeProjectAPI();
+    if (result.status == 200) {
+      setHomeProjects(result.data);
+    } else {
+      console.log(result);
+      console.log(result.response.data);
+    }
+  };
+
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       setLoggedIn(true);
     } else {
       setLoggedIn(false);
     }
+    // api call
+    getHomeProjects();
   }, []);
+  // console.log(homeProjects);
   return (
     <>
       <div
@@ -59,9 +75,13 @@ function Home() {
         <h1 className="text-center mb-5">Explore our projects</h1>
         <marquee behavior="" direction="" scrollAmount={20}>
           <div className="d-flex flex-row justify-content-between ">
-            <div style={{ width: "400px" }}>
-              <ProjectCard />
-            </div>
+            {homeProjects?.length > 0
+              ? homeProjects.map((project) => (
+                  <div className="me-5">
+                    <ProjectCard project={project}/>
+                  </div>
+                ))
+              : null}
           </div>
         </marquee>
       </div>

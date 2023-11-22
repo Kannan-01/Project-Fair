@@ -48,7 +48,7 @@ function Footer() {
             <MDBRow className="mt-3">
               <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-4">
                 <h6 className="text-uppercase fw-bold mb-3">
-                <MDBIcon fas icon="project-diagram" className="me-2" />
+                  <MDBIcon fas icon="project-diagram" className="me-2" />
                   Project Fair
                 </h6>
                 <p>
@@ -74,30 +74,19 @@ function Footer() {
                   <Link to={"/projects"} className="text-reset">
                     Projects
                   </Link>{" "}
-                </p> 
+                </p>
               </MDBCol>
 
               <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-4">
-                <h6 className="text-uppercase fw-bold mb-4">Useful links</h6>
+                <h6 className="text-uppercase fw-bold mb-4">Features</h6>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Pricing
-                  </a>
+                  <a className="text-reset">projects</a>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Settings
-                  </a>
+                  <a className="text-reset">github links</a>
                 </p>
                 <p>
-                  <a href="#!" className="text-reset">
-                    Orders
-                  </a>
-                </p>
-                <p>
-                  <a href="#!" className="text-reset">
-                    Help
-                  </a>
+                  <a className="text-reset">live demo</a>
                 </p>
               </MDBCol>
 
@@ -113,9 +102,6 @@ function Footer() {
                 </p>
                 <p>
                   <MDBIcon icon="phone" className="me-3" /> 0484 2874845
-                </p>
-                <p>
-                  <MDBIcon icon="print" className="me-3" /> 0484 2874845
                 </p>
               </MDBCol>
             </MDBRow>
