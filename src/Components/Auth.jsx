@@ -13,6 +13,7 @@ function Auth({ register }) {
     email: "",
     password: "",
   });
+  
   // handle registration function
   const handleRegister = async (e) => {
     e.preventDefault();

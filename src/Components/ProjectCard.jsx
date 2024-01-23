@@ -12,14 +12,14 @@ function ProjectCard({ project }) {
   return (
     <>
       {project && (
-        <Card className="btn" onClick={handleShow}>
-          <Card.Title className="mt-3">{project.title}</Card.Title>
+        <Card className="btn shadow-0" onClick={handleShow}>
           <Card.Img
             src={
               project ? `${BASE_URL}/Uploads/${project?.projectImage}` : contact
             }
             className="rounded-0"
           />
+          <Card.Title className="me-auto mt-2">{project.title}</Card.Title>
         </Card>
       )}
 

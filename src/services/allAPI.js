@@ -22,6 +22,37 @@ export const homeProjectAPI = async () => {
 };
 
 // allProjects
-export const allProjectsAPI = async (reqHeader) => {
-  return await commonAPI("GET", `${BASE_URL}/projects/all`, "", reqHeader);
+export const allProjectsAPI = async (searchKey, reqHeader) => {
+  return await commonAPI(
+    "GET",
+    `${BASE_URL}/projects/all?search=${searchKey}`,
+    "",
+    reqHeader
+  );
+};
+
+// user projects
+export const userProjectsAPI = async (reqHeader) => {
+  return await commonAPI("GET", `${BASE_URL}/user/all-projects`, "", reqHeader);
+};
+
+// edit project
+export const editProjectAPI = async (projectId, reqBody, reqHeader) => {
+  return await commonAPI(
+    "PUT",
+    `${BASE_URL}/project/edit/${projectId}`,
+    reqBody,
+    reqHeader
+  );
+};
+
+// delete project
+
+export const deleteProjectAPI = async (projectId, reqHeader) => {
+  return await commonAPI(
+    "DELETE",
+    `${BASE_URL}/project/remove/${projectId}`,
+    {},
+    reqHeader
+  );
 };

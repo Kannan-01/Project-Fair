@@ -5,15 +5,16 @@ import ProjectCard from "../Components/ProjectCard";
 import { allProjectsAPI } from "../services/allAPI";
 
 function Projects() {
+  const [searchKey,setSearchkey]=useState("")
   const [allProjects, setAllProjects] = useState([]);
   const getAllProjects = async () => {
     if (sessionStorage.getItem("token")) {
       const token = sessionStorage.getItem("token");
       const reqHeader = {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       };
-      const result = await allProjectsAPI(reqHeader);
+      const result = await allProjectsAPI(searchKey,reqHeader);
       if (result.status === 200) {
         setAllProjects(result.data);
       } else {
@@ -23,7 +24,7 @@ function Projects() {
   };
   useEffect(() => {
     getAllProjects();
-  }, []);
+  }, [searchKey]);
   console.log(allProjects);
   return (
     <div style={{ marginTop: "100px" }} className="projects">
@@ -35,6 +36,7 @@ function Projects() {
             type="text"
             className="form-control"
             placeholder="search projects by its technologies used"
+            onChange={e=>setSearchkey(e.target.value)}
           />
           <i
             style={{ marginLeft: "-40px" }}
@@ -43,9 +45,15 @@ function Projects() {
         </div>
       </div>
       <Row className="mt-5 container-fluid">
-        <Col sm={12} md={6} lg={4}>
-          <ProjectCard z />
-        </Col>
+        {allProjects?.length > 0 ? (
+          allProjects?.map((project) => (
+            <Col sm={12} md={6} lg={4}>
+              <ProjectCard project={project} className="shadow-0"/>
+            </Col>
+          ))
+        ) : (
+          <p className="fw-bolder text-danger fs-5">Please Login !!</p>
+        )}
       </Row>
     </div>
   );

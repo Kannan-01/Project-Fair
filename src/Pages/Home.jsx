@@ -77,7 +77,7 @@ function Home() {
           <div className="d-flex flex-row justify-content-between ">
             {homeProjects?.length > 0
               ? homeProjects.map((project) => (
-                  <div className="me-5">
+                  <div className="me-5" style={{width:"500px"}} >
                     <ProjectCard project={project}/>
                   </div>
                 ))

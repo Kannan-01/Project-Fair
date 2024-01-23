@@ -1,66 +1,43 @@
 import React, { useContext, useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
+import { BASE_URL } from "../services/baseurl";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { addProjectAPI } from "../services/allAPI";
-import { addProjectResponseContext } from "../Contexts/ContextShare";
-function AddProject() {
-  const {addProjectResponse,setAddProjectResponse}= useContext(addProjectResponseContext)
-  const [token, setToken] = useState("");
+import { editProjectAPI } from "../services/allAPI";
+import { editProjectResponseContext } from "../Contexts/ContextShare";
+
+function EditProject({ project }) {
+  const {editProjectResponse, seteditProjectResponse} = useContext(editProjectResponseContext);
+
   const [show, setShow] = useState(false);
+  const [preview, setPreview] = useState("");
+  const [projectDetails, setProjectDetails] = useState({
+    id: project._id,
+    title: project.title,
+    languages: project.languages,
+    overview: project.overview,
+    github: project.overview,
+    website: project.website,
+    projectImage: "",
+  });
   const handleClose = () => {
     setShow(false);
     setProjectDetails({
-      title: "",
-      languages: "",
-      overview: "",
-      github: "",
-      website: "", 
+      id: project._id,
+      title: project.title,
+      languages: project.languages,
+      overview: project.overview,
+      github: project.overview,
+      website: project.website,
       projectImage: "",
     });
     setPreview("");
   };
-  const handleShow = () => setShow(true);
-  const [projectDetails, setProjectDetails] = useState({
-    title: "",
-    languages: "",
-    overview: "",
-    github: "",
-    website: "",
-    projectImage: "",
-  });
-  const [preview, setPreview] = useState("");
-
-  // console.log(projectDetails);
-  console.log(preview);
-  useEffect(() => {
-    if (projectDetails.projectImage)
-      setPreview(URL.createObjectURL(projectDetails.projectImage));
-  }, [projectDetails.projectImage]);
-  // for getting userId
-  useEffect(() => {
-    if (sessionStorage.getItem("token")) {
-      setToken(sessionStorage.getItem("token"));
-    } else {
-      setToken("");
-    }
-  }, []);
-
-  // for add project
-  const handleAdd = async (e) => {
-    e.preventDefault();
-    const { title, languages, overview, github, website, projectImage } =
+  const handleUpdate = async() => {
+    const { id, title, languages, overview, github, website, projectImage } =
       projectDetails;
-    if (
-      !title ||
-      !languages ||
-      !overview ||
-      !github ||
-      !website ||
-      !projectImage
-    ) {
-      toast.warning("please fill the form completely");
+    if (!title || !languages || !overview || !github || !website) {
+      toast.info("Please fill the form completely");
     } else {
       const reqBody = new FormData();
       reqBody.append("title", title);
@@ -68,18 +45,37 @@ function AddProject() {
       reqBody.append("overview", overview);
       reqBody.append("github", github);
       reqBody.append("website", website);
-      reqBody.append("projectImage", projectImage);
-
-      if (token) {
+      preview
+        ? reqBody.append("projectImage", projectImage)
+        : reqBody.append("projectImage", project.projectImage);
+      const token = sessionStorage.getItem("token");
+      if (preview) {
         const reqHeader = {
           "Content-Type": "multipart/form-data",
           "Authorization": `Bearer ${token}`
         };
-        const result = await addProjectAPI(reqBody, reqHeader);
+        //  api call
+        const result = await editProjectAPI(id,reqBody,reqHeader)
         if (result.status === 200) {
           console.log(result.data);
           handleClose()
-          setAddProjectResponse(result.data)
+          seteditProjectResponse(result.data)
+        } else {
+          console.log(result);
+          toast.warning(result.response.data);
+        }
+      } else {
+        const reqHeader = {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        };
+        const result = await editProjectAPI(id,reqBody,reqHeader)
+
+        // api call
+        if (result.status === 200) {
+          console.log(result.data);
+          handleClose()
+          seteditProjectResponse(result.data)
         } else {
           console.log(result);
           toast.warning(result.response.data);
@@ -87,12 +83,18 @@ function AddProject() {
       }
     }
   };
+  
+  const handleShow = () => setShow(true);
+  useEffect(() => {
+    if (projectDetails.projectImage) {
+      setPreview(URL.createObjectURL(projectDetails.projectImage));
+    }
+  }, [projectDetails.projectImage]);
   return (
-    <div>
-      <Button variant="dark" onClick={handleShow}>
-        Add projects
-      </Button>
-
+    <>
+      <button onClick={handleShow} className="btn shadow-0">
+        <i class="fa-solid fa-pen-to-square fa-2x"></i>
+      </button>
       <Modal
         show={show}
         onHide={handleClose}
@@ -102,7 +104,7 @@ function AddProject() {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Project Details</Modal.Title>
+          <Modal.Title>Edit Project Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="row">
@@ -123,7 +125,7 @@ function AddProject() {
                   src={
                     preview
                       ? preview
-                      : "https://i0.wp.com/kifabrik.mirmi.tum.de/wp-content/uploads/2022/05/placeholder-139.png?ssl=1"
+                      : `${BASE_URL}/Uploads/${project.projectImage}`
                   }
                   alt=""
                 />
@@ -207,8 +209,8 @@ function AddProject() {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleAdd}>
-            Add
+          <Button onClick={handleUpdate} variant="primary">
+            Update
           </Button>
         </Modal.Footer>
       </Modal>
@@ -224,8 +226,8 @@ function AddProject() {
         pauseOnHover
         theme="colored"
       />
-    </div>
+    </>
   );
 }
 
-export default AddProject;
+export default EditProject;

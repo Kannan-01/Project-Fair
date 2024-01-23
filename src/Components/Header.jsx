@@ -5,9 +5,16 @@ import {
   MDBNavbarBrand,
   MDBIcon,
 } from "mdb-react-ui-kit";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 function Header({ insideDashboard }) {
+  const navigate = useNavigate()
+  const handleLogout=()=>{
+    sessionStorage.removeItem("existingUser")
+    sessionStorage.removeItem("token")
+    navigate('/')
+
+  }
   return (
     <>
       <MDBNavbar
@@ -26,7 +33,7 @@ function Header({ insideDashboard }) {
               style={{ backgroundColor: "#f2f2f2" }}
               className="text-muted shadow-0 fw-bold fs-6 "
             >
-              <div className="d-flex align-items-center justify-content-center">
+              <div className="d-flex align-items-center justify-content-center" onClick={handleLogout}>
                 Logout<i class="fa-solid fa-arrow-right-from-bracket ms-2"></i>
               </div>{" "}
             </Button>
